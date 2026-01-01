@@ -27,8 +27,9 @@ export function useCreateBooking() {
       queryClient.invalidateQueries({ queryKey: ['bookings'] })
       toast.success('Booking created successfully!')
     },
-    onError: (error: any) => {
-      toast.error(error.response?.data?.message || 'Failed to create booking')
+    onError: (error: unknown) => {
+      const err = error as { response?: { data?: { message?: string } } }
+      toast.error(err.response?.data?.message || 'Failed to create booking')
     },
   })
 }
@@ -42,8 +43,9 @@ export function useCancelBooking() {
       queryClient.invalidateQueries({ queryKey: ['bookings'] })
       toast.success('Booking cancelled successfully')
     },
-    onError: (error: any) => {
-      toast.error(error.response?.data?.message || 'Failed to cancel booking')
+    onError: (error: unknown) => {
+      const err = error as { response?: { data?: { message?: string } } }
+      toast.error(err.response?.data?.message || 'Failed to cancel booking')
     },
   })
 }

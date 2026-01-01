@@ -12,6 +12,13 @@ interface PaymentConfirmation {
   bookingId: string
 }
 
+interface PaymentHistory {
+  id: string
+  amount: number
+  date: string
+  status: string
+}
+
 export const paymentsApi = {
   createPaymentIntent: async (
     bookingId: string,
@@ -35,8 +42,8 @@ export const paymentsApi = {
     return data.data
   },
 
-  getPaymentHistory: async (): Promise<any[]> => {
-    const { data } = await apiClient.get<ApiResponse<any[]>>(
+  getPaymentHistory: async (): Promise<PaymentHistory[]> => {
+    const { data } = await apiClient.get<ApiResponse<PaymentHistory[]>>(
       '/payments/history'
     )
     return data.data

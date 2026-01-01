@@ -27,7 +27,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (token && storedUser) {
       try {
         setUser(JSON.parse(storedUser))
-      } catch (error) {
+      } catch {
         localStorage.removeItem('auth_token')
         localStorage.removeItem('user')
       }
@@ -42,8 +42,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       localStorage.setItem('auth_token', response.token)
       localStorage.setItem('user', JSON.stringify(response.user))
       toast.success('Welcome back!')
-    } catch (error: any) {
-      toast.error(error.response?.data?.message || 'Login failed')
+    } catch (error: unknown) {
+      const err = error as { response?: { data?: { message?: string } } }
+      toast.error(err.response?.data?.message || 'Login failed')
       throw error
     }
   }
@@ -55,8 +56,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       localStorage.setItem('auth_token', response.token)
       localStorage.setItem('user', JSON.stringify(response.user))
       toast.success('Account created successfully!')
-    } catch (error: any) {
-      toast.error(error.response?.data?.message || 'Registration failed')
+    } catch (error: unknown) {
+      const err = error as { response?: { data?: { message?: string } } }
+      toast.error(err.response?.data?.message || 'Registration failed')
       throw error
     }
   }
@@ -68,7 +70,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       localStorage.removeItem('auth_token')
       localStorage.removeItem('user')
       toast.success('Logged out successfully')
-    } catch (error) {
+    } catch (error: unknown) {
       // Still clear local data even if API call fails
       setUser(null)
       localStorage.removeItem('auth_token')
@@ -82,8 +84,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setUser(updatedUser)
       localStorage.setItem('user', JSON.stringify(updatedUser))
       toast.success('Profile updated successfully')
-    } catch (error: any) {
-      toast.error(error.response?.data?.message || 'Update failed')
+    } catch (error: unknown) {
+      const err = error as { response?: { data?: { message?: string } } }
+      toast.error(err.response?.data?.message || 'Update failed')
       throw error
     }
   }
